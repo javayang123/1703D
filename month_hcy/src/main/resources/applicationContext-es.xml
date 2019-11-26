@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/data/elasticsearch http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 第1步：加载配置文件 -->
+	<!-- <context:property-placeholder location="classpath:es.properties" /> -->
+	<!-- elasticsearch连接配置 -->
+	 <elasticsearch:transport-client id="client"
+		cluster-nodes="bawei1:9300" cluster-name="elasticsearch" /> 
+	 <!-- <elasticsearch:transport-client id="client" cluster-nodes="127.0.0.1:9300" 
+		cluster-name="elasticsearch" /> -->   
+	 <!-- 相当复杂的查询使用模板对象 全文检索 短语检索 高亮 -->
+	<bean name="elasticsearchTemplate"
+		class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+		<constructor-arg ref="client" />
+	</bean>
+
+	<!-- springData操作es接口扫描 相对简单的增删改查 模糊分页 -->
+	<elasticsearch:repositories base-package="com.hcy.esdao" />
+</beans>
